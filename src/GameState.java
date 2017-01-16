@@ -11,17 +11,13 @@ class GameState {
         this.playerTurn = 0;
     }
 
-    private GameState(int[][] playerFingers, int playerTurn){
+    GameState(int[][] playerFingers, int playerTurn){
         this.playerFingers = playerFingers;
         this.playerTurn = playerTurn;
     }
 
     void printPlayerFingers() {
-        System.out.println(
-                playerFingers[0][0] + " " + playerFingers[0][1] + " vs " +
-                playerFingers[1][0] + " " + playerFingers[1][1]
-        );
-        System.out.println("Player " + (playerTurn + 1) + " to move");
+        System.out.println(this.toString().substring(1,this.toString().length()-1));
     }
 
     int makeMove(int from, int to) throws IllegalMoveError {
@@ -45,15 +41,31 @@ class GameState {
     private int checkForWinner() {
         int[] loser = {0,0};
         if (Arrays.equals(playerFingers[0], loser)){
-            return 0;
-        } else if (Arrays.equals(playerFingers[1], loser)){
             return 1;
+        } else if (Arrays.equals(playerFingers[1], loser)){
+            return 0;
         }
         return -1;
     }
 
     public GameState copy() {
         return new GameState(this.playerFingers, this.playerTurn);
+    }
+
+    @Override
+    public boolean equals(Object other){
+        if (other == null) return false;
+        if (other == this) return true;
+        if (!(other instanceof GameState))return false;
+        GameState castOther = (GameState)other;
+        return Arrays.deepEquals(this.playerFingers, castOther.playerFingers) && playerTurn == castOther.playerTurn;
+    }
+
+    @Override
+    public String toString(){
+        return "<"+playerFingers[0][0] + " " + playerFingers[0][1] + " vs " +
+                playerFingers[1][0] + " " + playerFingers[1][1] +
+                ", Player " + (playerTurn + 1) + " to move>";
     }
 
     class IllegalMoveError extends Exception {

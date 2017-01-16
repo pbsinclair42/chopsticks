@@ -14,7 +14,7 @@ public class Main {
             try {
                 int winner = game.makeMove(from, to);
                 if (winner >= 0) {
-                    System.out.println("Player " + winner + " wins!");
+                    System.out.println("Player " + (winner+1) + " wins!");
                     System.exit(0);
                 }
             } catch (GameState.IllegalMoveError e) {
